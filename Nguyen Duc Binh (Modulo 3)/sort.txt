@@ -1,0 +1,178 @@
+procedure InsertionSort(var A: Arr; N: Integer);   // barrier
+var
+  I, J: Integer;
+  Temp: Integer;
+begin
+  for I := 2 to N do
+    begin
+      Temp := A[I];
+      J := I-1;
+
+      while (J > 0) and (A[J] > Temp) do
+        begin
+          A[J+1] := A[J];
+          Dec(J);
+        end;
+
+      A[J+1] := Temp;
+    end;
+end;
+
+
+procedure BinaryInsertionSort(var A: Arr; N: Integer);
+var
+  I, J, Inf, Sup, Mid, Pivot: Integer;
+begin
+  for I := 2 to N do
+    begin
+      Pivot := A[I];
+      Inf := 1; Sup := I-1;
+
+      repeat
+        Mid := (Inf + Sup) div 2;
+
+        if Pivot < A[Mid] then
+          Sup := Mid - 1
+        else
+          Inf := Mid + 1;
+      until Inf > Sup;
+
+      for J := I-1 downto Inf do
+        A[J+1] := A[J];
+
+      A[Inf]:= Pivot;
+    end;
+end;
+
+
+procedure SelectionSort(var A: Arr; N: Integer);
+var
+  I, J, Min, T: Integer;
+begin
+  for I := 1 to N-1 do
+  begin
+    Min := I;
+
+    for J := I+1 to N do
+      if A[J] < A[Min] then
+        Min := J;
+
+    T := A[Min];
+    A[Min] := A[I];
+    A[I] := T;
+  end;
+end;
+
+
+procedure QuickSort(var A: Arr; Lef, Rig: Integer);
+var
+  I, J: Integer;
+  Temp, Mid: Integer;
+begin
+  I := Lef;
+  J := Rig;
+  Mid := A[(I+J) div 2];
+
+  repeat
+    while (A[I] <{>} Mid) do Inc(I);
+    while (A[J] >{<} Mid) do Dec(J);
+    if I<=J then
+    begin
+      Temp := A[I];
+      A[I] := A[J];
+      A[J] := Temp;
+
+      Inc(I);
+      Dec(J);
+    end;
+  until I>J;
+
+  if (Lef<J) then QuickSort(A, Lef, J);
+  if (I<Rig) then QuickSort(A, I, Rig);
+end;
+
+
+procedure BubbleSort(var A: Arr; N: Integer);
+var
+  I, J, Tmp: Integer;
+begin
+  for I := 2 to N-1 do
+    for J := N downto I do
+      if A[J] < A[J-1] then
+      begin
+        Tmp := A[J]; A[J] := A[J-1]; A[J-1] := Tmp;
+      end;
+end;
+
+procedure BetterBubble(var A: Arr; N: Integer);
+var
+  I, J: Integer;
+  Tmp: Integer;
+  Sad: Boolean;
+begin
+  for I := 1 to N-1 do
+    begin
+      Sad := False;
+
+      for J := 1 to N-I do
+        if A[J] > A[J+1] then
+          begin
+            Tmp := A[J]; A[J] := A[J+1]; A[J+1] := Tmp;
+            Sad := True;
+          end;
+      
+      if not Sad then
+        break;
+    end;
+end;
+
+procedure ShellSort(var A: Arr; N: Integer);
+var
+  I, J, K: Integer;
+  Tmp: Integer;
+begin
+  K := N div 2;
+  while K > 0 do
+    begin
+      for I := K + 1 to N do
+        begin
+          Tmp := A[I];
+          J := I-K;
+          while (J > 0) and (A[J] > Tmp) do
+            begin
+              A[J+K] := A[J];
+              J := J-K;
+            end;
+          A[J+K] := Tmp;
+        end;
+      K := K div 2;
+    end;
+end;
+
+
+
+procedure ShakerSort(var A: Arr; N: Integer);
+var
+  I, Tmp, Lef, Rig: Integer;
+begin
+  Lef := 1;
+  Rig := N - 1;
+
+  repeat
+    for I := Lef to Rig do
+      if A[I] > A[I+1] then
+        begin
+          Tmp := A[I]; A[I] := A[I+1]; A[I+1] := Tmp;
+        end;
+
+    Inc(Lef);
+
+    for I := Rig downto Lef do
+      if A[I] < A[I-1] then
+        begin
+          Tmp := A[I]; A[I] := A[I-1]; A[I-1] := Tmp;
+        end;
+
+    Dec(Rig);
+  until Rig < Lef;
+end;
